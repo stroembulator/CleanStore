@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="template.xhtml">
+	<ui:define name="content">
+	    Add your content here or delete to use the default
+	   <h:form>
+	   
+	   
+	   <p:galleria value="#{photoCamView.images}" var="image" panelWidth="500" panelHeight="313" showCaption="true">
+    <p:graphicImage value="image/#{image}" alt="Image Description for #{image}" title="#{image}"/>
+</p:galleria>
+	   
+			<p:editor></p:editor>
+
+			<h:panelGrid columns="3" cellpadding="5">
+				<p:photoCam widgetVar="pc" listener="#{photoCamView.oncapture}"
+					update="photo" />
+				<p:commandButton type="button" value="Capture"
+					onclick="PF('pc').capture()" />
+				<p:outputPanel id="photo">
+ 				
+<!-- 					<p:graphicImage -->
+<!-- 						name="demo/images/photocam/#{photoCamView.filename}.jpeg" -->
+<!-- 						rendered="#{not empty photoCamView.filename}" /> -->
+<!-- 					<p:graphicImage -->
+<!-- 						value="image/1.png" /> -->
+						
+
+<!--  x
+<p:graphicImage value="#{photoCamView.image}" rendered="#{not empty photoCamView.image}" />
+ -->x
+				</p:outputPanel>
+			</h:panelGrid>
+			<p:photoCam widgetVar="pc" listener="#{photoCamView.oncapture}" />
+
+			<p:button value="aasss" title="ffffff"></p:button>
+			
+			
+			
+<p:contentFlow value="#{photoCamView.images}" var="image">
+    <p:graphicImage value="#{image}" />
+</p:contentFlow>
+			<input type="submit" />
+			<input type="submit" />
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>
