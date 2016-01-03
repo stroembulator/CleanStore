@@ -27,7 +27,9 @@
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
-			<version>5.3.RC2</version>
+<!-- 			<version>5.3.RC2</version>
+ -->			
+ <version>5.3</version>
 		</dependency>
 	</dependencies>
 
