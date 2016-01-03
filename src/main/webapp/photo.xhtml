@@ -7,36 +7,32 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-<ui:composition template="template.xhtml">
-	<ui:define name="header" />
+<f:view contentType="text/html">
 
-	<ui:define name="content">
-		<h:form>
-			<h:commandButton id="back" value="backvalue" action="back" />
 
-			<h:panelGrid columns="1" cellpadding="5">
-				<p:photoCam widgetVar="pc" listener="#{photoCamView.oncapture}"
-					update="photo" />
-				<p:commandButton type="button" value="Capture"
-					onclick="PF('pc').capture()" />
-			</h:panelGrid>
-			aaa
-			<p:graphicImage value="#{graphicImageView.chart}" />
-			
- 					<p:graphicImage value="#{photoCamView.lastCaptured}" />
- 					bbb
-			<h:panelGrid columns="1" cellpadding="5" >
-				<p:outputPanel id="photo">
-<!-- 
-					<p:graphicImage value="#{photoCamView.lastCaptured}" rendered="#{not empty photoCamView.lastCapturedName}" />
- -->
- 					<p:graphicImage value="#{photoCamView.lastCaptured}" />
-				</p:outputPanel>
-				<h:commandButton id="delete" value="deletevalue" action="delete" />
-			</h:panelGrid>
-		</h:form>
-	</ui:define>
+	<ui:composition template="template.xhtml">
+		<ui:define name="header" />
 
-	<ui:define name="footer" />
-</ui:composition>
+		<ui:define name="content">
+			<h:form>
+				<h:commandButton id="back" value="backvalue" action="back" />
+
+				<h:panelGrid columns="1" cellpadding="5">
+					<p:photoCam widgetVar="pc" listener="#{photoCamView.oncapture}"
+						update="photo" />
+					<p:commandButton type="button" value="Capture"
+						onclick="PF('pc').capture()" />
+				</h:panelGrid>
+				<h:panelGrid id="photo" columns="1" cellpadding="5">
+					<p:outputPanel>
+						<p:graphicImage url="image/#{photoCamView.lastCapturedName}"
+							rendered="#{not empty photoCamView.lastCapturedName}" />
+					</p:outputPanel>
+				</h:panelGrid>
+			</h:form>
+		</ui:define>
+
+		<ui:define name="footer" />
+	</ui:composition>
+</f:view>
 </html>
