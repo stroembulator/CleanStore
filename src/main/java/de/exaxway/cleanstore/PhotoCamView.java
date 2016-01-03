@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.FacesException;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -20,6 +21,7 @@ import javax.faces.event.PhaseId;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 
 import org.primefaces.event.CaptureEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -28,6 +30,10 @@ import org.primefaces.model.StreamedContent;
 @ManagedBean
 @ViewScoped
 public class PhotoCamView {
+	@EJB
+    Helper photoCamView;
+
+ 
 	private List<String> images = Arrays.asList(new String[]{
 //		"1.jpg", "2.jpg", "3.jpg"
 	});
@@ -94,9 +100,19 @@ public class PhotoCamView {
 	}
 
 	public void oncapture(CaptureEvent captureEvent) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        PhaseId phaseId = captureEvent.getPhaseId();
+        phaseId.getOrdinal();
+
+
+FacesContext fCtx = FacesContext.getCurrentInstance();
+HttpSession session = (HttpSession) fCtx.getExternalContext().getSession(false);
+String sessionId = session.getId();
+
+
+        
 		filename = getRandomImageName();
 		byte[] data = captureEvent.getData();
-		
 
 		lastCaptured = new DefaultStreamedContent(new ByteArrayInputStream(data), "image/png");
 		lastCaptured.setContentType("image/png");
@@ -124,6 +140,8 @@ public class PhotoCamView {
 		 throw new FacesException("Error in writing captured image.", e);
 		 }
 
+//		 photoCamView.add(sessionId, data);
+		 photoCamView.add("x", data);
 	}
 	
 	public void oncaptureNew(CaptureEvent captureEvent) {

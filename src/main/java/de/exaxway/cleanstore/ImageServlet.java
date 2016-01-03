@@ -54,6 +54,7 @@ public class ImageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
         // Get requested image by path info.
         String requestedImage = request.getParameter("id"); //request.getPathInfo();
         

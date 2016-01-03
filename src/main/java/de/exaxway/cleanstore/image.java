@@ -40,7 +40,7 @@ public class image extends HttpServlet {
 
 		FileInputStream fis = new FileInputStream(file);
 		//byte[] b = new byte[1000];
-		byte[] b = photoCamView.getLD();
+		byte[] b = photoCamView.getLD(request.getSession().getId());
 //		int i = fis.read(b);
 //		while (i > 0) {
 //			response.getOutputStream().write(b, 0, i);
