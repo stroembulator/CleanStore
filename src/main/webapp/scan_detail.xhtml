@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html">
+
+
+	<ui:composition template="template.xhtml">
+		<ui:define name="header" />
+
+
+
+
+		<ui:define name="content">
+			<h:form>
+				<h:commandButton id="back" value="backvalue" action="back" />
+
+				<c:if test="#{empty photoCamView.code}">
+					<h:panelGrid columns="1" cellpadding="5">
+						<p:photoCam widgetVar="pc"
+							listener="#{photoCamView.oncaptureCode}" update="@all" />
+						<p:commandButton type="button" value="Scan"
+							onclick="PF('pc').capture()" />
+					</h:panelGrid>
+				</c:if>
+				<c:if test="#{not empty photoCamView.code}">
+					<h:panelGrid id="code" columns="1" cellpadding="5">
+						<p:outputPanel>
+						#{photoCamView.code}
+					</p:outputPanel>
+					</h:panelGrid>
+				</c:if>
+			</h:form>
+		</ui:define>
+
+		<ui:define name="footer" />
+	</ui:composition>
+</f:view>
+</html>
