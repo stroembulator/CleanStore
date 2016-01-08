@@ -12,9 +12,9 @@
             Add your content here or delete to use the default
             <h:form>
 
-                <p:dataTable var="boxData" value="#{dtBasicView.cars}"
+                <p:dataTable var="boxData" value="#{boxDataView.boxDataList}"
 
-                             selection="#{dtBasicView.selectedBoxData}"
+                             selection="#{boxDataView.selectedBoxData}"
                              rowKey="#{boxData.id}">
 
                     <p:column selectionMode="single"/>

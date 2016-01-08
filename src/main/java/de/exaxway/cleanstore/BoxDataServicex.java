@@ -14,13 +14,14 @@ import javax.faces.bean.ManagedBean;
  
 @ManagedBean(name = "carService")
 @ApplicationScoped
-public class BoxDataService {
+public class BoxDataServicex {
      
     private final static String[] descriptions;
     private final static String[] keywords;
      
     private final static String[] qrCodes;
-     
+    private BoxData selectedBoxData = null;
+    
     static {
         keywords = new String[10];
         keywords[0] = "Naegel";
@@ -103,5 +104,9 @@ public class BoxDataService {
      
     public List<String> getBrands() {
         return Arrays.asList(qrCodes);
+    }
+    
+    public BoxData getSelectedBoxData() {
+        return selectedBoxData;
     }
 }

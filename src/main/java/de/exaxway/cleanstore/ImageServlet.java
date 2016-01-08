@@ -27,7 +27,7 @@ public class ImageServlet extends HttpServlet {
 			throws ServletException, IOException {
 		final String imageName = request.getPathInfo().substring(1);
 
-		byte[] imageData = persistent.putImageData(request.getSession().getId(), imageName);
+		byte[] imageData = persistent.getImageData(request.getSession().getId(), imageName);
 		response.setHeader("Content-Length", String.valueOf(imageData.length));
 		response.setContentType("image/png");
 		response.getOutputStream().write(imageData, 0, imageData.length);

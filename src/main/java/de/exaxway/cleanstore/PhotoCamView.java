@@ -72,23 +72,6 @@ public class PhotoCamView {
 		return filename;
 	}
 
-	public void oncapture(final CaptureEvent captureEvent) {
-		LOG.info("oncapture");
-		FacesContext fCtx = FacesContext.getCurrentInstance();
-		HttpSession session = (HttpSession) fCtx.getExternalContext().getSession(false);
-		String sessionId = session.getId();
-
-		byte[] data = captureEvent.getData();
-
-		lastCaptured = new DefaultStreamedContent(new ByteArrayInputStream(data), "image/png");
-		lastCaptured.setContentType("image/png");
-		lastCaptured.setName("lc.png");
-		lastCaptured.setContentEncoding("image/png");
-		lastCapturedName = "photo_" + imageId++;
-
-		// photoCamView.add(sessionId, data);
-		photoCamView.getImageData(sessionId, lastCapturedName, data);
-	}
 
 	public String getLastCapturedName() {
 		return lastCapturedName;

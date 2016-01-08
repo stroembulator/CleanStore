@@ -1,5 +1,6 @@
 package de.exaxway.cleanstore;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BoxData {
@@ -7,7 +8,11 @@ public class BoxData {
     private final String qrCode;
     private final String keywords;
     private final String description;
-    private List<byte[]> photoList;
+    private final List<byte[]> photoList = new ArrayList<>();
+
+    public List<byte[]> getPhotoList() {
+        return photoList;
+    }
 
     public String getId() {
         return id;
@@ -21,7 +26,7 @@ public class BoxData {
         return description;
     }
 
-    BoxData(final String id, final String qrCode, final String keywords, String description) {
+    public BoxData(final String id, final String qrCode, final String keywords, String description) {
         this.id = id;
         this.qrCode = qrCode;
         this.keywords = keywords;

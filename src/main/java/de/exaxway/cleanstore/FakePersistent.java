@@ -10,12 +10,12 @@ import javax.ejb.Startup;
 public class FakePersistent {
 	private Map<String, Map<String, byte[]>> sessionImageMap = new HashMap<>();
 
-	public byte[] putImageData(final String sessionId, final String imageName) {
+	public byte[] getImageData(final String sessionId, final String imageName) {
 		final Map<String, byte[]> imageMap = sessionImageMap.get(sessionId);
 		return imageMap.get(imageName);
 	}
 
-	public void getImageData(final String sessionId, final String imageName, final byte[] data) {
+	public void putImageData(final String sessionId, final String imageName, final byte[] data) {
 		Map<String, byte[]> imageMap = sessionImageMap.get(sessionId);
 
 		if (imageMap == null) {
