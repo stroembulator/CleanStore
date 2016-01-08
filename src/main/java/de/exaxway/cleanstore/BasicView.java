@@ -10,10 +10,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
@@ -31,22 +29,23 @@ public class BasicView implements Serializable {
 
     private List<BoxData> boxData;
 
-//    @ManagedProperty("#{carService}")
-    private BoxDataService boxDataServicexx;
+    @ManagedProperty("#{boxDataService}")
+    private BoxDataService boxDataService;
+    
     private BoxData selectedBoxData;
 
     @PostConstruct
     public void init() {
-//        boxData = boxDataServicexx.createCars(10);
-//        selectedBoxData = boxDataServicexx.getSelectedBoxData();
+        boxData = boxDataService.createBoxData(10);
+        selectedBoxData = boxDataService.getSelectedBoxData();
     }
 
     public List<BoxData> getBoxDataList() {
         return boxData;
     }
 
-    public void setService(BoxDataService service) {
-        this.boxDataServicexx = service;
+    public void setBoxDataService(final BoxDataService service) {
+        this.boxDataService = service;
     }
 
     public void setSelectedBoxData(final BoxData selectedBoxData) {

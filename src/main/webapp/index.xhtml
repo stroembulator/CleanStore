@@ -11,48 +11,30 @@
         <ui:define name="content">
             Add your content here or delete to use the default
             <h:form>
+                <p:dataTable var="boxData" value="#{boxDataView.boxDataList}"
 
-                <p:dataTable var="car" value="#{dtBasicView2.cars}">
+                             selection="#{boxDataView.selectedBoxData}"
+                             rowKey="#{boxData.id}">
+
+                    <p:column selectionMode="single"/>
+
+
                     <p:column headerText="Id">
-                        <h:outputText value="#{car.id}" />
+                        <h:outputText value="#{boxData.id}" />
                     </p:column>
 
-                    <p:column headerText="Year">
-                        <h:outputText value="#{car.year}" />
+                    <p:column headerText="Beschreibung">
+                        <h:outputText value="#{boxData.description}" />
                     </p:column>
 
-                    <p:column headerText="Brand">
-                        <h:outputText value="#{car.brand}" />
+                    <p:column headerText="QR-Code">
+                        <h:outputText value="#{boxData.qrCode}" />
                     </p:column>
 
-                    <p:column headerText="Color">
-                        <h:outputText value="#{car.color}" />
+                    <p:column headerText="Stichworte">
+                        <h:outputText value="#{boxData.keyword}" />
                     </p:column>
                 </p:dataTable>
-                <!--                <p:dataTable var="boxData" value="#{boxDataView.boxDataList}"
-                
-                                             selection="#{boxDataView.selectedBoxData}"
-                                             rowKey="#{boxData.id}">
-                
-                                    <p:column selectionMode="single"/>
-                
-                
-                                    <p:column headerText="Id">
-                                        <h:outputText value="#{boxData.id}" />
-                                    </p:column>
-                
-                                    <p:column headerText="Beschreibung">
-                                        <h:outputText value="#{boxData.description}" />
-                                    </p:column>
-                
-                                    <p:column headerText="QR-Code">
-                                        <h:outputText value="#{boxData.qrCode}" />
-                                    </p:column>
-                
-                                    <p:column headerText="Stichworte">
-                                        <h:outputText value="#{boxData.keyword}" />
-                                    </p:column>
-                                </p:dataTable>-->
 
 
                 <h:commandButton id="scan_detail" value="detail" action="scan_detail" />
