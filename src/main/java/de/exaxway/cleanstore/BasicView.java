@@ -31,21 +31,21 @@ public class BasicView implements Serializable {
 
     private List<BoxData> boxData;
 
-    @ManagedProperty("#{carService}")
-    private BoxDataServicex boxDataServicexx;
+//    @ManagedProperty("#{carService}")
+    private BoxDataService boxDataServicexx;
     private BoxData selectedBoxData;
 
     @PostConstruct
     public void init() {
-        boxData = boxDataServicexx.createCars(10);
-        selectedBoxData = boxDataServicexx.getSelectedBoxData();
+//        boxData = boxDataServicexx.createCars(10);
+//        selectedBoxData = boxDataServicexx.getSelectedBoxData();
     }
 
     public List<BoxData> getBoxDataList() {
         return boxData;
     }
 
-    public void setService(BoxDataServicex service) {
+    public void setService(BoxDataService service) {
         this.boxDataServicexx = service;
     }
 
