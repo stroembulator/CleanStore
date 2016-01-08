@@ -18,7 +18,7 @@ public class BoxData {
         return id;
     }
 
-    public String getKeyword() {
+    public String getKeywords() {
         return keywords;
     }
 

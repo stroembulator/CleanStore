@@ -40,17 +40,6 @@ public class PhotoCamView {
 
 	private int imageId = 0;
 	
-	private List<String> images = Arrays.asList(new String[] {
-			// "1.jpg", "2.jpg", "3.jpg"
-	});
-
-	public List<String> getImages() {
-		return images;
-	}
-
-	public void setImages(List<String> images) {
-		this.images = images;
-	}
 
 	private String filename;
 	private DefaultStreamedContent image = null;

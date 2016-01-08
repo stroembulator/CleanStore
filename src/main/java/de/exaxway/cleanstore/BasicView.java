@@ -7,19 +7,20 @@ package de.exaxway.cleanstore;
 
 import java.io.ByteArrayInputStream;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import org.primefaces.event.CaptureEvent;
 import org.primefaces.model.DefaultStreamedContent;
 
 @ManagedBean(name="boxDataView")
-@ViewScoped
+@SessionScoped
 public class BasicView implements Serializable {
 
 //    @EJB
@@ -73,4 +74,17 @@ public class BasicView implements Serializable {
      //    boxDataService.putImageData(sessionId, imageName, data);
         //   this.selectedBoxData.getPhotoList().add(data);
     }
+    
+    	private List<String> images = Arrays.asList(new String[] {
+			// "1.jpg", "2.jpg", "3.jpg"
+	});
+
+	public List<String> getImages() {
+		return images;
+	}
+
+	public void setImages(List<String> images) {
+		this.images = images;
+	}
+
 }
