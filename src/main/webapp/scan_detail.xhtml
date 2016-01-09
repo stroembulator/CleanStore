@@ -19,7 +19,7 @@
 
             <ui:define name="content">
                 <h:form>
-                    <h:commandButton id="back" value="backvalue" action="back" />
+                    <h:commandButton id="back" value="backvalue" action="index" />
 
                     <c:if test="#{empty boxDataView.selectedBoxData}">
                         <h:panelGrid columns="1" cellpadding="5">
@@ -36,20 +36,22 @@
                             <p:outputPanel id="qrCode">
                                 #{boxDataView.selectedBoxData.qrCode}
                             </p:outputPanel>
-                            
+
                             <h:outputLabel id="descriptionLabel" for="description"
                                            value="Description:" />
                             <p:editor id="description" value="#{boxDataView.selectedBoxData.description}"></p:editor>
-                            
+
                             <h:outputLabel id="keywordsLabel" for="keywords"
                                            value="Keywords:" />
                             <p:inputText id="keywords" value="#{boxDataView.selectedBoxData.keywords}"/>
-                            
+
                             <h:outputLabel id="imagesLabel" for="description"
                                            value="Images:" />
-                            <p:galleria value="#{boxDataView.images}" var="image" panelWidth="500" panelHeight="313" showCaption="true">
-                                <p:graphicImage value="image/#{image}" alt="Image Description for #{image}" title="#{image}"/>
+                            <p:galleria value="#{boxDataView.imageNames}" var="imageName" panelWidth="500" panelHeight="313" showCaption="true">
+                                <p:graphicImage value="image/#{imageName}" alt="Image Description for #{imageName}" title="#{imageName}"/>
+                                
                             </p:galleria>
+                            <h:commandButton id="photo" value="Foto" action="photo" />
                         </h:panelGrid>
                     </c:if>
                 </h:form>

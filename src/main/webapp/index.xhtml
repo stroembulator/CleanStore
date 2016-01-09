@@ -36,37 +36,7 @@
                     </p:column>
                 </p:dataTable>
 
-
                 <h:commandButton id="scan_detail" value="detail" action="scan_detail" />
-
-
-               
-
-                <h:panelGrid columns="3" cellpadding="5">
-                    <p:photoCam widgetVar="pc" listener="#{photoCamView.oncapture}"
-                                update="photo" />
-                    <p:commandButton type="button" value="Capture"
-                                     onclick="PF('pc').capture()" />
-                    <p:outputPanel id="photo">
-
-                        <!-- 					<p:graphicImage -->
-                        <!-- 						name="demo/images/photocam/#{photoCamView.filename}.jpeg" -->
-                        <!-- 						rendered="#{not empty photoCamView.filename}" /> -->
-                        <!-- 					<p:graphicImage -->
-                        <!-- 						value="image/1.png" /> -->
-
-
-                       
-                    </p:outputPanel>
-                </h:panelGrid>
-                <p:photoCam widgetVar="pc" listener="#{photoCamView.oncapture}" />
-
-                <p:button value="aasss" title="ffffff"></p:button>
-
-
-
-                <input type="submit" />
-                <input type="submit" />
             </h:form>
         </ui:define>
     </ui:composition>

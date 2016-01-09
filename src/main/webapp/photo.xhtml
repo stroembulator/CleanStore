@@ -15,18 +15,18 @@
 
 		<ui:define name="content">
 			<h:form>
-				<h:commandButton id="back" value="backvalue" action="back" />
+				<h:commandButton id="back" value="back" action="scan_detail" />
 
 				<h:panelGrid columns="1" cellpadding="5">
-					<p:photoCam widgetVar="pc" listener="#{photoCamView.oncapture}"
+					<p:photoCam widgetVar="pc" listener="#{boxDataView.oncapture}"
 						update="photo" />
 					<p:commandButton type="button" value="Capture"
 						onclick="PF('pc').capture()" />
 				</h:panelGrid>
 				<h:panelGrid id="photo" columns="1" cellpadding="5">
 					<p:outputPanel>
-						<p:graphicImage url="image/#{photoCamView.lastCapturedName}"
-							rendered="#{not empty photoCamView.lastCapturedName}" />
+						<p:graphicImage url="image/#{boxDataView.lastCapturedName}"
+							rendered="#{not empty boxDataView.lastCapturedName}" />
 					</p:outputPanel>
 				</h:panelGrid>
 			</h:form>

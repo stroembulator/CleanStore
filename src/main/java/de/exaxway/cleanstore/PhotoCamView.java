@@ -38,14 +38,12 @@ public class PhotoCamView {
 	@EJB
 	FakePersistent photoCamView;
 
-	private int imageId = 0;
 	
 
 	private String filename;
 	private DefaultStreamedContent image = null;
 	private DefaultStreamedContent xx;
 	private DefaultStreamedContent lastCaptured = null;
-	private String lastCapturedName = null;
 
 	private String code = null;
 
@@ -62,9 +60,6 @@ public class PhotoCamView {
 	}
 
 
-	public String getLastCapturedName() {
-		return lastCapturedName;
-	}
 	
 	public void oncaptureCode(final CaptureEvent captureEvent) {
 		LOG.info("oncaptureCode");
