@@ -47,7 +47,7 @@ public class BoxDataService {
         descriptions[9] = "Aufräumen.";
          
         qrCodes = new String[10];
-        qrCodes[0] = "box123";
+        qrCodes[0] = "umfrage.uci-kinowelt.de";
         qrCodes[1] = "box124";
         qrCodes[2] = "box125";
         qrCodes[3] = "box126";
@@ -68,8 +68,8 @@ public class BoxDataService {
     }
     
      
-    private String getDummyQrCode() {
-        return qrCodes[(int) (Math.random() * 10)];
+    private String getDummyQrCode(final int x) {
+        return qrCodes[x];
     }
     
      private String getDummyKeyword() {
@@ -83,7 +83,7 @@ public class BoxDataService {
     public List<BoxData> createBoxData(int size) {
         List<BoxData> list = new ArrayList<>();
         for(int i = 0 ; i < size ; i++) {
-            BoxData boxData = new BoxData(getDummyId(), getDummyQrCode());
+            BoxData boxData = new BoxData(getDummyId(), getDummyQrCode(i));
             boxData.setKeywords(getDummyKeyword());
             boxData.setDescription(getDummyDescription());
             list.add(boxData);

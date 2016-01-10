@@ -45,7 +45,6 @@ public class PhotoCamView {
 	private DefaultStreamedContent xx;
 	private DefaultStreamedContent lastCaptured = null;
 
-	private String code = null;
 
 	public StreamedContent getImage() {
 		return xx;
@@ -61,20 +60,7 @@ public class PhotoCamView {
 
 
 	
-	public void oncaptureCode(final CaptureEvent captureEvent) {
-		LOG.info("oncaptureCode");
-		byte[] data = captureEvent.getData();
-		try {
-			code = readQRCode(data);
-		} catch (Exception e) {
-			LOG.log(Level.WARNING, "scan failed", e);
-		}
-		
-	}
 	
-	public String getCode() {
-		return code;
-	}
 	
 	public static String readQRCode(byte[] data)
 			throws FileNotFoundException, IOException, NotFoundException {

@@ -5,10 +5,12 @@
  */
 package de.exaxway.cleanstore;
 
+import static de.exaxway.cleanstore.PhotoCamView.readQRCode;
 import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -37,6 +39,7 @@ public class BasicView implements Serializable {
 
     private BoxData selectedBoxData;
     private String sessionId;
+    private String code = null;
 
     @PostConstruct
     public void init() {
@@ -96,6 +99,22 @@ public class BasicView implements Serializable {
 
     public String getLastCapturedName() {
         return lastCapturedName;
+    }
+
+    public void oncaptureCode(final CaptureEvent captureEvent) {
+        LOG.info("oncaptureCode");
+        byte[] data = captureEvent.getData();
+        try {
+            code = readQRCode(data);
+            selectedBoxData = boxData.stream().filter(b -> b.getQrCode().equals(code)).findFirst().get();
+        } catch (Exception e) {
+            LOG.log(Level.WARNING, "scan failed", e);
+        }
+
+    }
+
+    public String getCode() {
+        return code;
     }
 
 }
