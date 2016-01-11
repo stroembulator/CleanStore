@@ -48,7 +48,6 @@ public class BasicView implements Serializable {
         FacesContext fCtx = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fCtx.getExternalContext().getSession(false);
         sessionId = session.getId();
-
     }
 
     public List<BoxData> getBoxDataList() {
@@ -116,5 +115,4 @@ public class BasicView implements Serializable {
     public String getCode() {
         return code;
     }
-
 }

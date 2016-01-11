@@ -47,7 +47,7 @@ public class BoxDataService {
         descriptions[9] = "Aufräumen.";
          
         qrCodes = new String[10];
-        qrCodes[0] = "umfrage.uci-kinowelt.de";
+        qrCodes[0] = "box123";
         qrCodes[1] = "box124";
         qrCodes[2] = "box125";
         qrCodes[3] = "box126";
