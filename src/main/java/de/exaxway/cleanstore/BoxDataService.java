@@ -83,7 +83,8 @@ public class BoxDataService {
     public List<BoxData> createBoxData(int size) {
         List<BoxData> list = new ArrayList<>();
         for(int i = 0 ; i < size ; i++) {
-            BoxData boxData = new BoxData(getDummyId(), getDummyQrCode(i));
+            BoxData boxData = new BoxData(getDummyId());
+            boxData.setQrCode(getDummyQrCode(i));
             boxData.setKeywords(getDummyKeyword());
             boxData.setDescription(getDummyDescription());
             list.add(boxData);

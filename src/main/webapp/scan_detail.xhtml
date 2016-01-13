@@ -23,7 +23,7 @@
 
                     <c:if test="#{empty boxDataView.selectedBoxData}">
                         <h:panelGrid columns="1" cellpadding="5">
-                            <p:photoCam widgetVar="pc"
+                            <p:photoCam widgetVar="pc" 
                                         listener="#{boxDataView.oncaptureCode}" update="@all" />
                             <p:commandButton type="button" value="Scan" action="blabla"
                                              onclick="PF('pc').capture()" />
@@ -33,9 +33,7 @@
                         <h:panelGrid id="code" columns="1" cellpadding="5">
                             <h:outputLabel id="qrCodeLabel" for="qrCode"
                                            value="QR-Code:" />
-                            <p:outputPanel id="qrCode">
-                                #{boxDataView.selectedBoxData.qrCode}
-                            </p:outputPanel>
+                             <p:inputText id="qrCode" value="#{boxDataView.selectedBoxData.qrCode}"/>
 
                             <h:outputLabel id="descriptionLabel" for="description"
                                            value="Description:" />

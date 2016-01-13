@@ -5,7 +5,11 @@ import java.util.List;
 
 public class BoxData {
     private final String id;
-    private final String qrCode;
+    private String qrCode;
+
+    public void setQrCode(String qrCode) {
+        this.qrCode = qrCode;
+    }
     private String keywords;
 
     public void setKeywords(String keywords) {
@@ -35,9 +39,8 @@ public class BoxData {
         return description;
     }
 
-    public BoxData(final String id, final String qrCode) {
+    public BoxData(final String id) {
         this.id = id;
-        this.qrCode = qrCode;
     }   
 
     public String getQrCode() {

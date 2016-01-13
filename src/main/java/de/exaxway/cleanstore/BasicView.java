@@ -6,10 +6,18 @@
 package de.exaxway.cleanstore;
 
 import static de.exaxway.cleanstore.PhotoCamView.readQRCode;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -18,13 +26,16 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.primefaces.event.CaptureEvent;
-import org.primefaces.model.DefaultStreamedContent;
 
 @ManagedBean(name = "boxDataView")
 @SessionScoped
 public class BasicView implements Serializable {
+
+    private boolean mobileWorkaroundEnabled = false;
 
     @EJB
     FakePersistent boxDataPersistent;
@@ -67,18 +78,44 @@ public class BasicView implements Serializable {
     }
 
     public void oncapture(final CaptureEvent captureEvent) {
-        LOG.info("oncapture");
+        try {
+            LOG.info("oncapture");
+            FacesContext fCtx = FacesContext.getCurrentInstance();
 
-        byte[] data = captureEvent.getData();
+            HttpServletRequest request = (HttpServletRequest) fCtx.getExternalContext().getRequest();
 
-        lastCapturedName = boxDataPersistent.putImageData(sessionId, selectedBoxData.getId(), data);
+            byte[] data = captureEvent.getData();
 
-        DefaultStreamedContent lastCaptured = new DefaultStreamedContent(new ByteArrayInputStream(data), "image/png");
-        lastCaptured.setContentType("image/png");
-        lastCaptured.setName(lastCapturedName);
-        lastCaptured.setContentEncoding("image/png");
+            data = mobileWorkaround(data);
 
-        this.selectedBoxData.getPhotoNameList().add(lastCapturedName);
+            lastCapturedName = boxDataPersistent.putImageData(sessionId, selectedBoxData.getId(), data);
+
+            this.selectedBoxData.getPhotoNameList().add(lastCapturedName);
+        } catch (IOException ex) {
+            Logger.getLogger(BasicView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private byte[] mobileWorkaround(byte[] data) throws IOException {
+        if (mobileWorkaroundEnabled) {
+            BufferedImage image = ImageIO.read(new ByteArrayInputStream(data));
+            AffineTransform txR180 = AffineTransform.getScaleInstance(-1, -1);
+            AffineTransform txFlip = AffineTransform.getScaleInstance(-1, 1);
+
+            txFlip.translate(-image.getWidth(null), 0);
+            txR180.translate(-image.getWidth(null), -image.getHeight(null));
+
+            AffineTransform tx = txFlip;
+            tx.concatenate(txR180);
+
+            AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+            image = op.filter(image, null);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(image, "png", baos);
+            data = baos.toByteArray();
+        }
+        return data;
     }
 
     private List<String> images = Arrays.asList(new String[]{ // "1.jpg", "2.jpg", "3.jpg"
@@ -103,7 +140,9 @@ public class BasicView implements Serializable {
     public void oncaptureCode(final CaptureEvent captureEvent) {
         LOG.info("oncaptureCode");
         byte[] data = captureEvent.getData();
+
         try {
+            data = mobileWorkaround(data);
             code = readQRCode(data);
             selectedBoxData = boxData.stream().filter(b -> b.getQrCode().equals(code)).findFirst().get();
         } catch (Exception e) {
@@ -114,5 +153,33 @@ public class BasicView implements Serializable {
 
     public String getCode() {
         return code;
+    }
+
+    public void add() {
+        boxData.add(new BoxData(UUID.randomUUID().toString().substring(0, 8)));
+    }
+
+    public void delete() {
+        boxData.remove(selectedBoxData);
+        selectedBoxData = null;
+    }
+
+    private Map image = new HashMap();
+
+    public void setCimage(Map image) {
+        this.image = image;
+        LOG.log(Level.INFO, "setImage: " + image.toString());
+    }
+
+    public Map getCimage() {
+        return image;
+    }
+
+    public boolean isMobileWorkaroundEnabled() {
+        return mobileWorkaroundEnabled;
+    }
+
+    public void setMobileWorkaroundEnabled(boolean mobileWorkaroundEnabled) {
+        this.mobileWorkaroundEnabled = mobileWorkaroundEnabled;
     }
 }
