@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition template="template.xhtml">
+        <ui:define name="content">
+            Add your content here or delete to use the default
+            <h:form>
+                <p:dataTable 
+
+                    var="boxData" value="#{boxDataView.boxDataList}"
+
+                    selection="#{boxDataView.selectedBoxData}"
+                    rowKey="#{boxData.id}">
+
+                    <p:column selectionMode="single" width="15"/>
+
+                    <p:column headerText="QR-Code">
+                        <h:graphicImage
+                            value="/qrcode_generator?text=#{boxData.qrCode}" />
+                    </p:column>
+
+                    <p:column headerText="Beschreibung">
+                        <h:outputText value="#{boxData.description}" />
+                    </p:column>
+
+                    <p:column headerText="Text">
+                        <h:outputText value="#{boxData.qrCode}" />
+                    </p:column>
+
+                    <p:column headerText="Stichworte">
+                        <h:outputText value="#{boxData.keywords}" />
+                    </p:column>
+
+                </p:dataTable>
+                <h:commandButton id="scan_detail" value="detail" action="scan_detail" />
+                <h:commandButton id="scan" value="scan" action="scan" />
+                <h:commandButton id="add" value="add" action="#{boxDataView.add}" />
+                <h:commandButton id="delete" value="delete" action="#{boxDataView.delete}" />
+                <br/>
+              
+                <p:inputSwitch id="mobileWorkaroundEnabled" value="#{boxDataView.mobileWorkaroundEnabled}"/>
+                <h:outputLabel id="qrCodeLabel" for="mobileWorkaroundEnabled"
+                               value="Mobile Workaround" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

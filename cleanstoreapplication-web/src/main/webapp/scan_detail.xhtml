@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+
+
+        <ui:composition template="template.xhtml">
+            <ui:define name="header" />
+
+
+
+
+            <ui:define name="content">
+                <h:form>
+                    <h:commandButton id="back" value="backvalue" action="index" />
+
+                    <c:if test="#{empty boxDataView.selectedBoxData}">
+                        <h:panelGrid columns="1" cellpadding="5">
+                            <p:photoCam widgetVar="pc" 
+                                        listener="#{boxDataView.oncaptureCode}" update="@all" />
+                            <p:commandButton type="button" value="Scan" action="blabla"
+                                             onclick="PF('pc').capture()" />
+                        </h:panelGrid>
+                    </c:if>
+                    <c:if test="#{not empty boxDataView.selectedBoxData}">
+                        <h:panelGrid id="code" columns="1" cellpadding="5">
+                            <h:outputLabel id="qrCodeLabel" for="qrCode"
+                                           value="QR-Code:" />
+                            <p:inputText id="qrCode" value="#{boxDataView.selectedBoxData.qrCode}"/>
+
+                            <h:outputLabel id="descriptionLabel" for="description"
+                                           value="Description:" />
+                            <p:editor id="description" value="#{boxDataView.selectedBoxData.description}"></p:editor>
+
+                            <h:outputLabel id="keywordsLabel" for="keywords"
+                                           value="Keywords:" />
+                            <p:inputText id="keywords" value="#{boxDataView.selectedBoxData.keywords}"/>
+
+                            <h:outputLabel id="imagesLabel" for="description"
+                                           value="Images:" />
+                            <p:galleria value="#{boxDataView.imageNames}" var="imageName" panelWidth="500" panelHeight="313" showCaption="true">
+                                <p:graphicImage value="image/#{imageName}" alt="Image Description for #{imageName}" title="#{imageName}"/>
+
+                            </p:galleria>
+                            <h:commandButton id="photo" value="Foto" action="photo" />
+                        </h:panelGrid>
+                    </c:if>
+                    <h:commandButton id="savedetail" value="Save" action="#{boxDataView.savedetail}" />
+                </h:form>
+            </ui:define>
+
+            <ui:define name="footer" />
+        </ui:composition>
+    </f:view>
+</html>
