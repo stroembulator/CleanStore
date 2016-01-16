@@ -5,26 +5,34 @@
  */
 package de.exaxway.cleanstore;
 
-import static de.exaxway.cleanstore.PhotoCamView.readQRCode;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.NotFoundException;
+import com.google.zxing.Result;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import de.exaxway.cleanstore.persist.BoxData;
+import de.exaxway.cleanstore.persist.PhotoData;
+import de.exaxway.cleanstore.persist.PhotoDataFacadeLocal;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.imageio.ImageIO;
@@ -35,45 +43,32 @@ import org.primefaces.event.CaptureEvent;
 @ManagedBean(name = "boxDataView")
 @SessionScoped
 public class BasicView implements Serializable {
+    private static final Logger LOG = Logger.getLogger(BasicView.class.getName());
+
+    @EJB
+    private PhotoDataFacadeLocal photoDataFacade;
 
     @EJB
     private de.exaxway.cleanstore.persist.BoxDataFacadeLocal boxDataFacade;
 
     private boolean mobileWorkaroundEnabled = false;
 
-    @EJB
-    FakePersistent boxDataPersistent;
-
-    Logger LOG = Logger.getLogger(PhotoCamView.class.getName());
     private String lastCapturedName = null;
 
     private List<BoxData> boxDataList;
 
-    @ManagedProperty("#{boxDataService}")
-    private BoxDataService boxDataService;
-
     private BoxData selectedBoxData;
-    private String sessionId;
     private String code = null;
-
-    private long maxid = 1000;
 
     @PostConstruct
     public void init() {
         boxDataList = boxDataFacade.findAll();
-      //  boxDataList = boxDataService.createBoxData(10);
-        selectedBoxData = boxDataService.getSelectedBoxData();
         FacesContext fCtx = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fCtx.getExternalContext().getSession(false);
-        sessionId = session.getId();
     }
 
     public List<BoxData> getBoxDataList() {
         return boxDataList;
-    }
-
-    public void setBoxDataService(final BoxDataService service) {
-        this.boxDataService = service;
     }
 
     public void setSelectedBoxData(final BoxData selectedBoxData) {
@@ -95,9 +90,15 @@ public class BasicView implements Serializable {
 
             data = mobileWorkaround(data);
 
-            lastCapturedName = boxDataPersistent.putImageData(sessionId, selectedBoxData.getId(), data);
+            PhotoData photoData = new PhotoData();
+            photoDataFacade.create(photoData);
+            lastCapturedName = "img_" + photoData.getId();
 
-            this.selectedBoxData.getPhotoNameList().add(lastCapturedName);
+            photoData.setName(lastCapturedName);
+            photoData.setPhotoData(data);
+            photoDataFacade.edit(photoData);
+
+            this.selectedBoxData.getPhotoList().add(photoData);
         } catch (IOException ex) {
             Logger.getLogger(BasicView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -125,19 +126,8 @@ public class BasicView implements Serializable {
         return data;
     }
 
-    private List<String> images = Arrays.asList(new String[]{ // "1.jpg", "2.jpg", "3.jpg"
-    });
-
-    public List<String> getImages() {
-        return images;
-    }
-
     public List<String> getImageNames() {
-        return selectedBoxData.getPhotoNameList();
-    }
-
-    public void setImages(final List<String> images) {
-        this.images = images;
+        return selectedBoxData.getPhotoList().stream().map(p -> p.getName()).collect(Collectors.toList());
     }
 
     public String getLastCapturedName() {
@@ -152,7 +142,7 @@ public class BasicView implements Serializable {
             data = mobileWorkaround(data);
             code = readQRCode(data);
             selectedBoxData = boxDataList.stream().filter(b -> b.getQrCode().equals(code)).findFirst().get();
-        } catch (Exception e) {
+        } catch (IOException | NotFoundException e) {
             LOG.log(Level.WARNING, "scan failed", e);
         }
 
@@ -172,23 +162,12 @@ public class BasicView implements Serializable {
     public void savedetail() {
         boxDataFacade.edit(selectedBoxData);
     }
- 
+
     public void delete() {
         selectedBoxData = null;
         boxDataFacade.remove(selectedBoxData);
         // TODO: remove
         boxDataList.remove(selectedBoxData);
-    }
-
-    private Map image = new HashMap();
-
-    public void setCimage(Map image) {
-        this.image = image;
-        LOG.log(Level.INFO, "setImage: " + image.toString());
-    }
-
-    public Map getCimage() {
-        return image;
     }
 
     public boolean isMobileWorkaroundEnabled() {
@@ -197,5 +176,18 @@ public class BasicView implements Serializable {
 
     public void setMobileWorkaroundEnabled(boolean mobileWorkaroundEnabled) {
         this.mobileWorkaroundEnabled = mobileWorkaroundEnabled;
+    }
+
+    public static String readQRCode(byte[] data)
+            throws FileNotFoundException, IOException, NotFoundException {
+        Map hintMap = new HashMap();
+        hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+
+        BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(
+                new BufferedImageLuminanceSource(
+                        ImageIO.read(new ByteArrayInputStream(data)))));
+        Result qrCodeResult = new MultiFormatReader().decode(binaryBitmap,
+                hintMap);
+        return qrCodeResult.getText();
     }
 }

@@ -10,7 +10,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,8 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 public class QrcodeServlet extends HttpServlet {
 
     private static final long serialVersionUID = -4695962497513334766L;
-    private final Logger LOG = Logger.getLogger(QrcodeServlet.class.getName());
-
+    private static final Logger LOG = Logger.getLogger(QrcodeServlet.class.getName());
 
     public QrcodeServlet() {
         super();
@@ -43,7 +43,7 @@ public class QrcodeServlet extends HttpServlet {
         String fileType = "png";
 
         try {
-            Hashtable<EncodeHintType, ErrorCorrectionLevel> hintMap = new Hashtable<EncodeHintType, ErrorCorrectionLevel>();
+            Map<EncodeHintType, ErrorCorrectionLevel> hintMap = new HashMap<>();
             hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
             QRCodeWriter qrCodeWriter = new QRCodeWriter();
             BitMatrix byteMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, size, size, hintMap);
@@ -68,14 +68,14 @@ public class QrcodeServlet extends HttpServlet {
 
             // response.setHeader("Content-Length", String.valueOf(ba.length));
         } catch (WriterException e) {
-            e.printStackTrace();
+            LOG.log(Level.SEVERE, e.getMessage(), e);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.log(Level.SEVERE, e.getMessage(), e);
         }
 
         response.setContentType("image/png");
 
-        LOG.log(Level.SEVERE, "Successfully created QR Code: " + text);
+        LOG.log(Level.INFO, "Successfully created QR Code: " + text);
 
     }
 }

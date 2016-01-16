@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -21,14 +22,16 @@ import javax.persistence.Id;
 public class BoxData implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String qrCode;
     private String description;
-    private List<byte[]> photoList = new ArrayList<>();
-    private List<String> photoNameList = new ArrayList<>();
+    
+    @OneToMany
+    private List<PhotoData> photoList = new ArrayList<>();
     private String keywords;
 
     public Long getId() {
@@ -51,7 +54,7 @@ public class BoxData implements Serializable {
         this.description = description;
     }
 
-    public List<byte[]> getPhotoList() {
+    public List<PhotoData> getPhotoList() {
         return photoList;
     }
 
@@ -67,16 +70,8 @@ public class BoxData implements Serializable {
         return qrCode;
     }
 
-    public List<String> getPhotoNameList() {
-        return photoNameList;
-    }
-
-    public void setPhotoList(final List<byte[]> photoList) {
+    public void setPhotoList(final List<PhotoData> photoList) {
         this.photoList = photoList;
-    }
-
-    public void setPhotoNameList(final List<String> photoNameList) {
-        this.photoNameList = photoNameList;
     }
 
     @Override

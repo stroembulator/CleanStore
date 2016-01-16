@@ -3,7 +3,7 @@
   <persistence-unit name="de.exaxway.cleanstore_cleanstoreapplication-ejb_ejb_1.1-SNAPSHOTPU" transaction-type="JTA">
     <jta-data-source>java:comp/DefaultDataSource</jta-data-source>
     <class>de.exaxway.cleanstore.persist.BoxData</class>
-    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>
     </properties>

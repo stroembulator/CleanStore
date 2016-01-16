@@ -1,5 +1,7 @@
 package de.exaxway.cleanstore;
 
+import de.exaxway.cleanstore.persist.PhotoData;
+import de.exaxway.cleanstore.persist.PhotoDataFacadeLocal;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,25 +15,28 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/image/*")
 public class ImageServlet extends HttpServlet {
-	private static final long serialVersionUID = -4695962497513334766L;
-	private final Logger LOG = Logger.getLogger(ImageServlet.class.getName());
+    private static final long serialVersionUID = -4695962497513334766L;
 
-	@EJB
-	private FakePersistent persistent;
+    private static final Logger LOG = Logger.getLogger(ImageServlet.class.getName());
 
-	public ImageServlet() {
-		super();
-	}
+    @EJB
+    private PhotoDataFacadeLocal photoDataFacade;
 
-	protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
-			throws ServletException, IOException {
-		final String imageName = request.getPathInfo().substring(1);
 
-		byte[] imageData = persistent.getImageData(request.getSession().getId(), imageName);
-		response.setHeader("Content-Length", String.valueOf(imageData.length));
-		response.setContentType("image/png");
-		response.getOutputStream().write(imageData, 0, imageData.length);
+    public ImageServlet() {
+        super();
+    }
 
-		LOG.log(Level.SEVERE, "doGet " + imageName);
-	}
+    protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
+            throws ServletException, IOException {
+        final String imageName = request.getPathInfo().substring(1);
+
+        PhotoData photoData = photoDataFacade.findByName(imageName);
+        byte[] imageData = photoData.getPhotoData();
+        response.setHeader("Content-Length", String.valueOf(imageData.length));
+        response.setContentType("image/png");
+        response.getOutputStream().write(imageData, 0, imageData.length);
+
+        LOG.log(Level.SEVERE, "doGet " + imageName);
+    }
 }
