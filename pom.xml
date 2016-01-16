@@ -14,9 +14,21 @@
   
     <!--workaround for non existing nexus.codehaus.org in parent dependency poms-->
     <repositories>
-        <repository>
+        <!--        <repository>
             <id>codehaus.org</id>
             <url>http://repository.codehaus.org</url>
+        </repository>-->
+        <repository>
+            <id>codehaus-snapshots</id>
+            <url>whatever</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
         </repository>
     </repositories>
+    
+    
 </project>
