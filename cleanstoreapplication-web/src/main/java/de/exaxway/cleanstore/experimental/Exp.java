@@ -13,6 +13,8 @@ import javax.faces.bean.SessionScoped;
 @ManagedBean
 @SessionScoped
 public class Exp {
+    private String text = "aha";
+    
     private Map image = new HashMap();
 
     public void setCimage(Map image) {
@@ -21,5 +23,13 @@ public class Exp {
 
     public Map getCimage() {
         return image;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }

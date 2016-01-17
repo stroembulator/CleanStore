@@ -44,6 +44,8 @@ import org.primefaces.event.CaptureEvent;
 @SessionScoped
 public class BasicView implements Serializable {
     private static final Logger LOG = Logger.getLogger(BasicView.class.getName());
+    
+    private String a;
 
     @EJB
     private PhotoDataFacadeLocal photoDataFacade;
@@ -189,5 +191,13 @@ public class BasicView implements Serializable {
         Result qrCodeResult = new MultiFormatReader().decode(binaryBitmap,
                 hintMap);
         return qrCodeResult.getText();
+    }
+
+    public String getA() {
+        return a;
+    }
+
+    public void setA(String a) {
+        this.a = a;
     }
 }

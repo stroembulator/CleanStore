@@ -32,20 +32,20 @@
                     <c:if test="#{not empty boxDataView.selectedBoxData}">
                         <h:panelGrid id="code" columns="1" cellpadding="5">
                             <h:outputLabel id="qrCodeLabel" for="qrCode"
-                                           value="QR-Code:" />
+                                           value="#{bundle.codeLabel}" />
                             <p:inputText id="qrCode" value="#{boxDataView.selectedBoxData.qrCode}"/>
 
                             <h:outputLabel id="descriptionLabel" for="description"
-                                           value="Description:" />
+                                           value="#{bundle.descriptionLabel}" />
                             <p:editor id="description" value="#{boxDataView.selectedBoxData.description}"></p:editor>
-
+                            
                             <h:outputLabel id="keywordsLabel" for="keywords"
-                                           value="Keywords:" />
+                                           value="#{bundle.keywordsLabel}" />
                             <p:inputText id="keywords" value="#{boxDataView.selectedBoxData.keywords}"/>
 
-                            <h:outputLabel id="imagesLabel" for="description"
-                                           value="Images:" />
-                            <p:galleria value="#{boxDataView.imageNames}" var="imageName" panelWidth="500" panelHeight="313" showCaption="true">
+                            <h:outputLabel id="imagesLabel" for="imageList"
+                                           value="#{bundle.imagesLabel}" />
+                            <p:galleria id="imageList" value="#{boxDataView.imageNames}" var="imageName" panelWidth="500" panelHeight="313" showCaption="true">
                                 <p:graphicImage value="image/#{imageName}" alt="Image Description for #{imageName}" title="#{imageName}"/>
 
                             </p:galleria>
