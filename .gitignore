@@ -1,3 +1,5 @@
 /cleanstoreapplication-ejb/target/
 /cleanstoreapplication-web/target/
 /cleanstoreapplication-ear/target/
+/cleanstoreapplication-android/bin/
+/cleanstoreapplication-android/gen/
