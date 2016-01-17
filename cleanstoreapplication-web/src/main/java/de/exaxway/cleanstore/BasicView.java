@@ -45,7 +45,7 @@ import org.primefaces.event.CaptureEvent;
 public class BasicView implements Serializable {
     private static final Logger LOG = Logger.getLogger(BasicView.class.getName());
     
-    private String a;
+    private String a="abc";
 
     @EJB
     private PhotoDataFacadeLocal photoDataFacade;

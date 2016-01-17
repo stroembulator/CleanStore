@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+
+
+        <ui:composition template="template.xhtml">
+            <ui:define name="header" />
+
+
+            <ui:define name="content">
+                <h:form>
+                    <p:commandButton id="back" value="backvalue" action="index" />
+
+                    <h:panelGrid id="code" columns="1" cellpadding="5">
+                        <p:outputLabel id="qrCodeLabel" for="qrCode"
+                                       value="#{bundle.codeLabel}" />
+                        <p:inputText id="qrCode" value="#{boxDataView.selectedBoxData.qrCode}"/>
+
+                        <p:outputLabel id="descriptionLabel" for="description"
+                                       value="#{bundle.descriptionLabel}" />
+                        <p:inputTextarea id="description" value="#{boxDataView.selectedBoxData.description}" />
+
+                        <p:outputLabel id="keywordsLabel" for="keywords"
+                                       value="#{bundle.keywordsLabel}" />
+                        <p:inputText id="keywords" value="#{boxDataView.selectedBoxData.keywords}"/>
+
+                        <p:outputLabel id="imagesLabel" for="imageList"
+                                       value="#{bundle.imagesLabel}" />
+                        <p:galleria id="imageList" value="#{boxDataView.imageNames}" var="imageName" panelWidth="500" panelHeight="313" showCaption="true">
+                            <p:graphicImage value="image/#{imageName}" alt="Image Description for #{imageName}" title="#{imageName}"/>
+
+                        </p:galleria>
+                        <h:commandButton id="photo" value="Foto" action="photo" />
+                    </h:panelGrid>
+                    <h:commandButton id="savedetail" value="Save" action="#{boxDataView.savedetail}" />
+                </h:form>
+            </ui:define>
+
+            <ui:define name="footer" />
+        </ui:composition>
+    </f:view>
+</html>
